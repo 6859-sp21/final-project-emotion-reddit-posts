@@ -584,6 +584,15 @@ function wordCloud(selector) {
 			.on("click", function (d, i){
                 document.getElementById("subreddit_filter").value = d.text;
 				 SankeyUpdate();
+				})
+				.on("mouseover", function(d) {		
+
+			
+						d3.select(this).style("cursor", "pointer"); 
+                   
+					})					
+				.on("mouseout", function(d) {		
+					d3.select(this).style("cursor", "default"); 
 				});
 
         //Entering and existing words
