@@ -37,7 +37,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 
     // append the svg object to the body of the page
     function updateGraph() {
-        d3.select("svg").remove();
+        d3.select("#container-graph").select("svg").remove();
         var svg = d3.select("#container-graph").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)

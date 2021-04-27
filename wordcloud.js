@@ -1,72 +1,3 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<title>SANKEY Experiment</title>
-<style>
-
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-}
-
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-}
-
-.link {
-  fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
-}
-
-.link:hover {
-  stroke-opacity: .5;
-}
-
-</style>
-<body>
-
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="sankey_utils.js"></script>
-  <script src="d3.layout.cloud.js"></script>
-<div class="px-4">
-	<div class="row">
-		<h3 style = "vertical-align:middle;"> Select Subreddit</h3>
-	</div>
-	<div class="row">
-		<select name="subreddit_filter" id="subreddit_filter" class="selectpicker"></select>
-	</div>
-    <div class="row">
-		<div class="col-6">
-			<div id="wordcloud"></div>
-            
-	    </div>
-        <div class="col-6">
-		<div id="container-graph"></div>
-			
-        </div>
-	</div>
-</div>
-
-</body>
-
-
-<script src="custom_sankey.js"></script>
-<script>
-const subreddit_list = ['Advice', 'relationship_advice', 'legaladvice', '49ers']
-function createDropdown() {
-    const select = document.getElementById("subreddit_filter");
-    subreddit_list.forEach((d) => {
-        const option = document.createElement("option");
-        option.text = option.value = d;
-        select.add(option);
-    })
-}
-createDropdown();
-
-
 
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
@@ -140,12 +71,20 @@ function wordCloud(selector) {
 
 }
 
-var words = subreddit_list;
+//Some sample data - http://en.wikiquote.org/wiki/Opening_lines
+var words = [
+    "You don't know about me without you have read a book called The Adventures of Tom Sawyer but that ain't no matter.",
+    "The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon.",
+    "When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.",
+    "It was inevitable: the scent of bitter almonds always reminded him of the fate of unrequited love."
+]
 
 //Prepare one of the sample sentences by removing punctuation,
 // creating an array of words and computing a random size attribute.
 function getWords(i) {
-    return words
+    return words[i]
+            .replace(/[!\.,:;\?]/g, '')
+            .split(' ')
             .map(function(d) {
                 return {text: d, size: 10 + Math.random() * 60};
             })
@@ -154,21 +93,15 @@ function getWords(i) {
 //This method tells the word cloud to redraw with a new set of words.
 //In reality the new words would probably come from a server request,
 // user input or some other source.
-
-//Create a new instance of the word cloud visualisation.
-var myWordCloud = wordCloud('#wordcloud');
-console.log(myWordCloud)
-showNewWords(myWordCloud);
-var timeout_time = 0;
 function showNewWords(vis, i) {
     i = i || 0;
 
-    vis.update(getWords(i ++ % words.length));
-
-	setTimeout(function() { showNewWords(vis, i + 1)}, timeout_time)
-	timeout_time = 10000;
+    vis.update(getWords(i ++ % words.length))
+    setTimeout(function() { showNewWords(vis, i + 1)}, 2000)
 }
 
+//Create a new instance of the word cloud visualisation.
+var myWordCloud = wordCloud('#wordcloud');
 
-</script>
-</body>
+//Start cycling through the demo data
+showNewWords(myWordCloud);
