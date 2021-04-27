@@ -3,10 +3,10 @@ var margin = {
     top: 10,
     right: 10,
     bottom: 10,
-    left: 10
+    left: 40
 },
-width = 700 - margin.left - margin.right,
-height = 500 - margin.top - margin.bottom;
+width = 500 - margin.left - margin.right,
+height = 350 - margin.top - margin.bottom;
 
 var maxEmotions = 10;
 
@@ -20,6 +20,7 @@ color = d3.scaleOrdinal(d3.schemeCategory10);
 // load the data
 function SankeyUpdate() {
 d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion.csv", function (error, data) {
+
 
     var nested_data = d3.nest()
         .key(function (d) {
@@ -229,7 +230,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         })
     }
 
-    document.getElementById("subreddit_filter").addEventListener("input", updateGraph);
+    document.getElementById("subreddit_filter").addEventListener("change", updateGraph);
     updateGraph();
 });
 }
