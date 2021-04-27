@@ -18,7 +18,8 @@ format = function (d) {
 color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // load the data
-d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion_sample.csv", function (error, data) {
+function SankeyUpdate() {
+d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion.csv", function (error, data) {
 
     var nested_data = d3.nest()
         .key(function (d) {
@@ -30,7 +31,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         })
     })
         .entries(data);
-
+	
     top_emotions = nested_data.slice().sort((a, b) => d3.descending(a.value, b.value)).slice(0, maxEmotions).map(function (d) {
         return d.key;
     }); // Select top 10 emotions
@@ -225,6 +226,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         })
     }
 
-    document.getElementById("subreddit_filter").addEventListener("change", updateGraph);
+    document.getElementById("subreddit_filter").addEventListener("input", updateGraph);
     updateGraph();
 });
+}
