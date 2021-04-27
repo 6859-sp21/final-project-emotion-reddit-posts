@@ -38,7 +38,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 
     // append the svg object to the body of the page
     function updateGraph() {
-        d3.select("#container-graph").select("svg").remove();
+        document.getElementById("container-graph").innerHTML = "";
         var svg = d3.select("#container-graph").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -115,12 +115,14 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             .enter().append("path")
             .attr("class", "link")
             .attr("d", path)
-            .style("stroke-width", function (d) {
-            return Math.max(1, d.dy);
-        })
             .sort(function (a, b) {
             return b.dy - a.dy;
         });
+
+        link.transition()
+			.attr("stroke-width", function (d) { 
+                return Math.max(1, d.dy);
+            });
 
         // add the link titles
         link.append("title")
@@ -128,6 +130,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             return d.source.name + " → " +
             d.target.name + "\n" + format(d.value);
         });
+		
 
         // add in the nodes
         var node_data = svg.append("g").selectAll(".node")
