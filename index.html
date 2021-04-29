@@ -63,7 +63,6 @@
     <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="sankey_utils.js"></script>
@@ -71,11 +70,17 @@
 <div class="px-4">
 	<div class="jumbotron">
 		<div class="row">
+			<div class="col-6">
 			<h2>Analysis of Dominant Emotions in Reddit Posts  </h2>
-		</div>
 		
+
 		<b>Select Subreddit</b> &nbsp;&nbsp;
 		<select  class="selectpicker" name="subreddit_filter" id="subreddit_filter"></select>
+		</div>
+			<div class="col-6" id='subreddit_div'>
+			<script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='150' data-width='500' data-theme='light'></script> 
+			</div>
+	</div>
 	</div>
 
 
@@ -101,6 +106,21 @@
 <script src="custom_sankey.js"></script>
 <script type="text/javascript" src="d3_gauge.js"></script>
 <script>
+		//script = document.getElementById('reddit_call')
+		//console.log(document.getElementById('reddit_call'))
+
+		//var script = document.createElement("script");
+
+	//	script.src = "https://redditjs.com/subreddit.js"; 
+//		script.setAttribute('data-subreddit', 'mba')
+		
+		//script.type = "text/javascript";	
+	//	script.setAttribute('type', 'text/javascript');
+//		document.getElementsByTagName("body")[0].appendChild(script);
+		//var elem = document.getElementById("myDIV");			
+		//elem`.appendChild(script);
+		//script.setAttribute('data-subreddit', 'chess')
+
 const subreddit_list = [
 '2meirl4meirl',
 '49ers',
@@ -706,7 +726,6 @@ function getWords() {
 
 //Create a new instance of the word cloud visualisation.
 var myWordCloud = wordCloud('#wordcloud');
-console.log(myWordCloud)
 showNewWords(myWordCloud);
 var timeout_time = 0;
 function showNewWords(vis, i) {
@@ -720,5 +739,8 @@ function showNewWords(vis, i) {
 SankeyUpdate()
 $("#subreddit_filter").trigger('change');
 $("#subreddit_filter").selectpicker('refresh');
+
+console.log(myWordCloud);
+
 </script>
 </body>

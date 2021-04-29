@@ -157,7 +157,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             return d.dy;
         })
         .attr("width", sankey.nodeWidth())
-        .style("fill", function (d) {
+        .style("fill", function (d) { // TODO: Change Source color to match cloud
             return d.color = color(d.name.replace(/ .*/, ""));
         })
         .style("stroke", function (d) {
@@ -202,7 +202,6 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 
             // make unique gradient ids
             const gradientID = `gradient${i}`;
-
             const startColor = d.source.color;
             const stopColor = d.target.color;
 
