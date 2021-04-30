@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>SANKEY Experiment</title>
+<title>Subreddit Emotion Analysis</title>
 <style>
 
 .node rect {
@@ -23,7 +23,11 @@
 .link:hover {
   stroke-opacity: .5;
 }
-
+		.page {
+			width: 100vw;
+			height: 100vh;
+			padding: 40px;
+		}
 
         #chart-gauge {
             width: 400px;
@@ -43,6 +47,67 @@
         .needle, .needle-center {
             fill: #464A4F;
         }
+
+#page1 {
+    background: url("007 Sunny Morning.png");
+    background-size: cover;
+    background-position: right;
+}
+
+#page2 {
+    background: url("007 Sunny Morning.png");
+	    background-size: cover;
+    background-position: right;
+}
+
+#page3 {
+    background: url("007 Sunny Morning.png");
+	    background-size: cover;
+    background-position: right;
+}
+
+#page4 {
+    background: url("007 Sunny Morning.png");
+    background-size: cover;
+    background-position: left;
+}
+
+
+#CurrentPage {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+#mainPage {
+    width: 400vw;
+    display: flex;
+    margin-left: 0;
+    transition: All 0.2s;
+}
+
+
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
 
 </style>
 <body>
@@ -67,44 +132,115 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="sankey_utils.js"></script>
   <script src="d3.layout.cloud.js"></script>
-<div class="px-4">
-	<div class="jumbotron">
-		<div class="row">
-			<div class="col-6">
-			<h2>Analysis of Dominant Emotions in Reddit Posts  </h2>
-		
+	<div id="mainPage">
+	     <section id="page1" class="page">
+                <div class="landingleft">
+				
+			<div class="row">
+					<div class="col-11">
+						<div>
+					Intro
+					 </div>
 
-		<b>Select Subreddit</b> &nbsp;&nbsp;
-		<select  class="selectpicker" name="subreddit_filter" id="subreddit_filter"></select>
+					</div>
+					<div class="col-1">
+								<p><i class="arrow right" id="button2" onClick="toPage(2)" ></i></p>
+					</div>
+					</div>
+				</div>
+     </section>
+	<section id="page2" class="page">
+	      <div class="landingleft">
+				<div class="row">
+					<div class="col-1">
+								<p><i class="arrow left" id="button2" onClick="toPage(1)" ></i></p>
+					</div>
+					<div class="col-10">
+						<div>
+	Community page
+	</div>
+	</div>
+					<div class="col-1">
+								<p><i class="arrow right" id="button3" onClick="toPage(3)" ></i></p>
+					</div>
+					</div>
+					
 		</div>
-			<div class="col-6" id='subreddit_div'>
-			<script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='150' data-width='500' data-theme='light'></script> 
+		</section>
+	<section id="page3" class="page">
+                <div class="landingleft">
+				<div class="row">
+					<div class="col-1">
+								<p><i class="arrow left" id="button2" onClick="toPage(2)" ></i></p>
+					</div>
+						<div class="col-10">
+	<div class="px-4">
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-6">
+				<h2>Analysis of Dominant Emotions in Reddit Posts  </h2>
+			
+
+			<b>Select Subreddit</b> &nbsp;&nbsp;
+			<select  class="selectpicker" name="subreddit_filter" id="subreddit_filter"></select>
 			</div>
-	</div>
-	</div>
+				<div class="col-6" id='subreddit_div'>
+				<script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='150' data-width='500' data-theme='light'></script> 
+				</div>
+		</div>
+		</div>
 
 
-    <div class="row">
-		<div class="col-4">
-			<div id="wordcloud"></div>            
-	    </div>
+		<div class="row">
+			<div class="col-4">
+				<div id="wordcloud"></div>            
+			</div>
 
-        <div class="col-5">
-			<div id="container-graph"></div>
-        </div>
-		
-		<div class="col-3">
-				<div id="chart-gauge">
-                        <p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
-                </div>    
-	    </div>
+			<div class="col-5">
+				<div id="container-graph"></div>
+			</div>
+			
+			<div class="col-3">
+					<div id="chart-gauge">
+							<p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
+					</div>    
+			</div>
+		</div>
 	</div>
+	</div>
+						<div class="col-1">
+								<p><i class="arrow right" id="button3" onClick="toPage(4)" ></i></p>
+					</div>
+	
+	</div>
+	</section>
+	<section id="page3" class="page">
+                <div class="landingleft">
+				
+			<div class="row">
+					<div class="col-1">
+								<p><i class="arrow left" id="button2" onClick="toPage(3)" ></i></p>
+					</div>
+					<div class="col-11">
+						<div>
+					Conclusion
+					 </div>
+
+					</div>
+
+					</div>
+				</div>
+	</section>
 </div>
+	             </div>
+                </div>
+            </section>
 </body>
 
 
 <script src="custom_sankey.js"></script>
 <script type="text/javascript" src="d3_gauge.js"></script>
+<script type="text/javascript" src="utilities.js"></script>
 <script>
 		//script = document.getElementById('reddit_call')
 		//console.log(document.getElementById('reddit_call'))
