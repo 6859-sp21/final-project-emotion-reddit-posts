@@ -89,26 +89,24 @@
     transition: All 0.2s;
 }
 
-
-
 .arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
+    border-right:10px solid black;
+    border-bottom:10px solid black;
+    width:60px;
+    height:60px;
+    transform: rotate(-45deg);
+    margin-top:40px;
 }
 
 
+.leftarrow {
+    border-right:10px solid black;
+    border-bottom:10px solid black;
+    width:60px;
+    height:60px;
+    transform: rotate(-225deg);
+    margin-top:40px;
+}
 </style>
 <body>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -137,14 +135,14 @@
                 <div class="landingleft">
 				
 			<div class="row">
-					<div class="col-11">
+					<div class="col-10">
 						<div>
 					Intro
 					 </div>
 
 					</div>
-					<div class="col-1">
-								<p><i class="arrow right" id="button2" onClick="toPage(2)" ></i></p>
+					<div class="col-2">
+								<p><div class="arrow right" id="button2" onClick="toPage(2)" ></div></p>
 					</div>
 					</div>
 				</div>
@@ -153,7 +151,7 @@
 	      <div class="landingleft">
 				<div class="row">
 					<div class="col-1">
-								<p><i class="arrow left" id="button2" onClick="toPage(1)" ></i></p>
+								<p><div class="leftarrow" id="button2" onClick="toPage(1)" ></div></p>
 					</div>
 					<div class="col-10">
 						<div>
@@ -161,7 +159,7 @@
 	</div>
 	</div>
 					<div class="col-1">
-								<p><i class="arrow right" id="button3" onClick="toPage(3)" ></i></p>
+								<p><div class="arrow right" id="button3" onClick="toPage(3)" ></div></p>
 					</div>
 					</div>
 					
@@ -171,7 +169,7 @@
                 <div class="landingleft">
 				<div class="row">
 					<div class="col-1">
-								<p><i class="arrow left" id="button2" onClick="toPage(2)" ></i></p>
+								<p><div class="leftarrow" id="button2" onClick="toPage(2)" ></div></p>
 					</div>
 						<div class="col-10">
 	<div class="px-4">
@@ -209,7 +207,7 @@
 	</div>
 	</div>
 						<div class="col-1">
-								<p><i class="arrow right" id="button3" onClick="toPage(4)" ></i></p>
+								<p><div class="arrow right" id="button3" onClick="toPage(4)" ></div></p>
 					</div>
 	
 	</div>
@@ -219,7 +217,7 @@
 				
 			<div class="row">
 					<div class="col-1">
-								<p><i class="arrow left" id="button2" onClick="toPage(3)" ></i></p>
+								<p><div class="leftarrow" id="button2" onClick="toPage(3)" ></div></p>
 					</div>
 					<div class="col-11">
 						<div>
