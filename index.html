@@ -3,6 +3,28 @@
 <title>Subreddit Emotion Analysis</title>
 <style>
 
+.topheader {
+	background-color: rgb(255,255,255);
+	  padding: 10px;
+    border-radius: 5px;
+	outline-color: rgb(204,204,204);
+	outline-width: 2px;
+	outline-style: solid;
+}
+
+.content {
+	background-color: rgb(255,255,255);
+	  padding: 10px;
+    border-radius: 5px;
+	outline-color: rgb(204,204,204);
+	outline-width: 2px;
+	outline-style: solid;
+}
+
+body {
+  overflow: hidden; /* Hide scrollbars */
+}
+
 .node rect {
   cursor: move;
   fill-opacity: .9;
@@ -49,25 +71,25 @@
         }
 
 #page1 {
-    background: url("007 Sunny Morning.png");
+	background-color: rgb(218,224,230);
     background-size: cover;
     background-position: right;
 }
 
 #page2 {
-    background: url("007 Sunny Morning.png");
+	background-color: rgb(218,224,230);
 	    background-size: cover;
     background-position: right;
 }
 
 #page3 {
-    background: url("007 Sunny Morning.png");
+	background-color: rgb(218,224,230);
 	    background-size: cover;
     background-position: right;
 }
 
 #page4 {
-    background: url("007 Sunny Morning.png");
+	background-color: rgb(218,224,230);
     background-size: cover;
     background-position: left;
 }
@@ -107,132 +129,160 @@
     transform: rotate(-225deg);
     margin-top:40px;
 }
+
+h3 {
+  text-align: center;
+}
+
+#r-addon {
+    background: linear-gradient(
+115deg
+, #e39a12, #db5909);
+    box-shadow: 0 5px 20px -2px rgb(200 50 150 / 70%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 0 0.75rem;
+}
+
+
 </style>
 <body>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
-    <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
-    <!-- Latest compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="sankey_utils.js"></script>
-  <script src="d3.layout.cloud.js"></script>
-	<div id="mainPage">
-	     <section id="page1" class="page">
-                <div class="landingleft">
-				
-			<div class="row">
-					<div class="col-10">
-						<div>
-					Intro
-					 </div>
-
-					</div>
-					<div class="col-2">
-								<p><div class="arrow right" id="button2" onClick="toPage(2)" ></div></p>
-					</div>
-					</div>
-				</div>
-     </section>
-	<section id="page2" class="page">
-	      <div class="landingleft">
-				<div class="row">
-					<div class="col-1">
-								<p><div class="leftarrow" id="button2" onClick="toPage(1)" ></div></p>
-					</div>
-					<div class="col-10">
-						<div>
-	Community page
-	</div>
-	</div>
-					<div class="col-1">
-								<p><div class="arrow right" id="button3" onClick="toPage(3)" ></div></p>
-					</div>
-					</div>
-					
-		</div>
-		</section>
-	<section id="page3" class="page">
-                <div class="landingleft">
-				<div class="row">
-					<div class="col-1">
-								<p><div class="leftarrow" id="button2" onClick="toPage(2)" ></div></p>
-					</div>
-						<div class="col-10">
-	<div class="px-4">
-		<div class="jumbotron">
-			<div class="row">
-				<div class="col-6">
-				<h2>Analysis of Dominant Emotions in Reddit Posts  </h2>
-			
-
-			<b>Select Subreddit</b> &nbsp;&nbsp;
-			<select  class="selectpicker" name="subreddit_filter" id="subreddit_filter"></select>
-			</div>
-				<div class="col-6" id='subreddit_div'>
-				<script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='150' data-width='500' data-theme='light'></script> 
-				</div>
-		</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-4">
-				<div id="wordcloud"></div>            
-			</div>
-
-			<div class="col-5">
-				<div id="container-graph"></div>
-			</div>
-			
-			<div class="col-3">
-					<div id="chart-gauge">
-							<p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
-					</div>    
-			</div>
-		</div>
-	</div>
-	</div>
-						<div class="col-1">
-								<p><div class="arrow right" id="button3" onClick="toPage(4)" ></div></p>
-					</div>
-	
-	</div>
-	</section>
-	<section id="page3" class="page">
-                <div class="landingleft">
-				
-			<div class="row">
-					<div class="col-1">
-								<p><div class="leftarrow" id="button2" onClick="toPage(3)" ></div></p>
-					</div>
-					<div class="col-11">
-						<div>
-					Conclusion
-					 </div>
-
-					</div>
-
-					</div>
-				</div>
-	</section>
-</div>
-	             </div>
-                </div>
-            </section>
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+   <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+   <script src="https://d3js.org/d3.v4.min.js"></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <script src="sankey_utils.js"></script>
+   <script src="d3.layout.cloud.js"></script>
+   <div id="mainPage">
+      <section id="page1" class="page">
+         <div class="row">
+            <div class="col-10">
+               <div class="d-flex justify-content-center">
+                  <img src="reddit_logo.svg" height=100> </img>
+               </div>
+               <div class="d-flex justify-content-center">
+                  <br><br><br><br>
+                  <h3>Is the Internet truly toxic? <br> Use this tool to see what emotions really dominate each Subreddit. </h3>
+               </div>
+               <div class="d-flex justify-content-center">
+                  <span id="r-addon" style="line-height: 2em">/r/</span>
+                  <select  class="selectpicker" data-width="75%" name="subreddit_filter_main" id="subreddit_filter_main" data-style="btn-warning"></select>
+               </div>
+            </div>
+            <div class="col-2">
+               <p>
+               <div class="arrow right" id="button2" onClick="toPage(2)" ></div>
+               </p>
+            </div>
+         </div>
+         <div class="row">
+            <br><br>
+            <div class="col-6">
+               <br>
+               <div id="wordcloud"></div>
+            </div>
+            <div class="col-4">
+               <br><br>
+               <div class="d-flex justify-content-center">
+                  <script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='200' data-width='500' data-theme='light'></script> 
+               </div>
+            </div>
+         </div>
+         <br><br>
+         <div class="row">
+            By Felix Dumont and Taylor Facen
+         </div>
+         <div class="row">
+            <a href="https://huggingface.co/datasets/go_emotions"><b>Dataset </b></a> &nbsp;- The GoEmotions dataset contains 58k carefully curated Reddit comments labeled for 27 emotion categories or Neutral. 
+         </div>
+      </section>
+      <section id="page2" class="page">
+         <div class="row">
+            <div class="col-1">
+               <p>
+               <div class="leftarrow" id="button2" onClick="toPage(1)" ></div>
+               </p>
+            </div>
+            <div class="col-10">
+               <div>
+                  Community page
+               </div>
+            </div>
+            <div class="col-1">
+               <p>
+               <div class="arrow right" id="button3" onClick="toPage(3)" ></div>
+               </p>
+            </div>
+         </div>
+      </section>
+      <section id="page3" class="page">
+         <div class="row">
+            <div class="col-1">
+               <p>
+               <div class="leftarrow" id="button2" onClick="toPage(2)" ></div>
+               </p>
+            </div>
+            <div class="col-10">
+                  <div class="topheader">
+                     <div class="row">
+                        <div class="col-6">
+                           <h2>Dominant Emotions in Reddit Posts  </h2>
+                           <b>Change Subreddit</b> &nbsp;&nbsp;
+                           <select  class="selectpicker" data-width="75%" name="subreddit_filter" id="subreddit_filter" data-style="btn-warning"></select>
+                        </div>
+                     </div>
+                  </div>
+                  <br>
+                  <div class="content">
+                     <div class="row">
+                        <div class="col-8">
+                           <div id="container-graph"></div>
+                        </div>
+                        <div class="col-4">
+                           <div id="chart-gauge">
+                              <p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+            <div class="col-1">
+               <p>
+               <div class="arrow right" id="button3" onClick="toPage(4)" ></div>
+               </p>
+            </div>
+         </div>
+      </section>
+      <section id="page3" class="page">
+         <div class="landingleft">
+            <div class="row">
+               <div class="col-1">
+                  <p>
+                  <div class="leftarrow" id="button2" onClick="toPage(3)" ></div>
+                  </p>
+               </div>
+               <div class="col-11">
+                  <div>
+                     Conclusion
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+   </div>
+   </section>
 </body>
 
 
@@ -747,6 +797,12 @@ function createDropdown() {
         option.text = option.value = d;
         select.add(option);
     })
+    const select2 = document.getElementById("subreddit_filter_main");
+    subreddit_list.forEach((d) => {
+        const option2 = document.createElement("option");
+        option2.text = option2.value = d;
+        select2.add(option2);
+    })
 }
 createDropdown();
 var avgRating = 4.0 // TODO: Implement
@@ -764,10 +820,10 @@ function wordCloud(selector) {
 
     //Construct the word cloud's SVG element
     var svg = d3.select(selector).append("svg")
-        .attr("width", 500)
-        .attr("height", 500)
+        .attr("width", 700)
+        .attr("height", 300)
         .append("g")
-        .attr("transform", "translate(250,250)");
+        .attr("transform", "translate(350,150)");
 		
 
 	
@@ -788,6 +844,10 @@ function wordCloud(selector) {
                 document.getElementById("subreddit_filter").value = d.text;
 								
 				$("#subreddit_filter").selectpicker('refresh');
+				
+				document.getElementById("subreddit_filter_main").value = d.text;
+								
+				$("#subreddit_filter_main").selectpicker('refresh');
 				 SankeyUpdate();
 				})
 				.on("mouseover", function(d) {		
@@ -829,7 +889,7 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            d3.layout.cloud().size([500, 500])
+            d3.layout.cloud().size([700, 300])
                 .words(words)
                 .padding(1)
                 //.rotate(function() { return ~~(Math.random() * 2) * 90; })
@@ -873,6 +933,9 @@ function showNewWords(vis, i) {
 SankeyUpdate()
 $("#subreddit_filter").trigger('change');
 $("#subreddit_filter").selectpicker('refresh');
+
+$("#subreddit_filter_main").trigger('change');
+$("#subreddit_filter_main").selectpicker('refresh');
 
 console.log(myWordCloud);
 

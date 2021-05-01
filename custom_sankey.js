@@ -3,7 +3,7 @@ var margin = {
     top: 10,
     right: 10,
     bottom: 10,
-    left: 40
+    left: 140
 },
 width = 500 - margin.left - margin.right,
 height = 350 - margin.top - margin.bottom;
@@ -38,7 +38,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
     }); // Select top 10 emotions
 
     // append the svg object to the body of the page
-    function updateGraph() {
+    function updateGraph(filter_value) {
         document.getElementById("container-graph").innerHTML = "";
         var svg = d3.select("#container-graph").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -49,7 +49,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         const defs = svg.append('defs');
         // Set the sankey diagram properties
         var sankey = d3.sankey()
-            .nodeWidth(45)
+            .nodeWidth(25)
             .nodePadding(height / 25) // ADJUST PADDING HERE
             .size([width, height]);
 
@@ -62,7 +62,17 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         };
 
         //dataGrouped = d3.group(data, d => d.target)
-        subreddit_val = document.getElementById("subreddit_filter").value;
+		if (filter_value==1){
+			subreddit_val = document.getElementById("subreddit_filter").value;
+			document.getElementById("subreddit_filter_main").value = subreddit_val;
+			
+			$("#subreddit_filter_main").selectpicker('refresh');
+		}
+		else {
+			subreddit_val = document.getElementById("subreddit_filter_main").value;
+			document.getElementById("subreddit_filter").value = subreddit_val;
+			$("#subreddit_filter").selectpicker('refresh');
+		}
         const data_filtered = data.filter(function (d) {
             if ((d.source == subreddit_val & d.value > 0) && (top_emotions.includes(d.target)))
                 return d;
@@ -229,7 +239,10 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
         })
     }
 
-    document.getElementById("subreddit_filter").addEventListener("change", updateGraph);
+    document.getElementById("subreddit_filter").addEventListener("change", function(){
+    updateGraph(1)});
+    document.getElementById("subreddit_filter_main").addEventListener("change", function(){
+    updateGraph(2)});
     updateGraph();
 });
 }
