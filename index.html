@@ -130,9 +130,6 @@ body {
     margin-top:40px;
 }
 
-h3 {
-  text-align: center;
-}
 
 #r-addon {
     background: linear-gradient(
@@ -246,11 +243,17 @@ h3 {
                   <br>
                   <div class="content">
                      <div class="row">
-                        <div class="col-8">
+                        <div class="col-4">
+						   <h4>Most common post emotions</h4>
                            <div id="container-graph"></div>
+                        </div>
+						<div class="col-4">
+						   <h4>Top emotions</h4>
+							<div id="top-emotions"></div>
                         </div>
                         <div class="col-4">
                            <div id="chart-gauge">
+						   <h4>Positivity rate (excl. neutral)</h4>
                               <p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
                            </div>
                         </div>
@@ -259,7 +262,7 @@ h3 {
             </div>
             <div class="col-1">
                <p>
-               <div class="arrow right" id="button3" onClick="toPage(4)" ></div>
+               <div class="arrow right" id="button4" onClick="toPage(4)" ></div>
                </p>
             </div>
          </div>
@@ -269,7 +272,7 @@ h3 {
             <div class="row">
                <div class="col-1">
                   <p>
-                  <div class="leftarrow" id="button2" onClick="toPage(3)" ></div>
+                  <div class="leftarrow" id="button3" onClick="toPage(3)" ></div>
                   </p>
                </div>
                <div class="col-11">
