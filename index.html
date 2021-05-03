@@ -130,9 +130,6 @@ body {
     margin-top:40px;
 }
 
-h3 {
-  text-align: center;
-}
 
 #r-addon {
     background: linear-gradient(
@@ -344,20 +341,29 @@ d3.json("./network-data.json", function(error, graph) {
                   <br>
                   <div class="content">
                      <div class="row">
-                        <div class="col-8">
+                        <div class="col-4">
+						   <h4>Most common post emotions</h4>
                            <div id="container-graph"></div>
+                        </div>
+						<div class="col-4">
+						   <h4>Top emotions</h4>
+							<div id="top-emotions"></div>
                         </div>
                         <div class="col-4">
                            <div id="chart-gauge">
-                              <p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
+						   <h4>Positivity rate</h4>
+                              <p class = "mb-1 text-center">Average Positivity (excl. neutral): <span id = "positive_rate"></span></p>
                            </div>
+						   <div id="positive-posts"></div>
+						   <div id="non-neutral-posts"></div>
                         </div>
-                     </div>
+                     
+					 </div>
                   </div>
             </div>
             <div class="col-1">
                <p>
-               <div class="arrow right" id="button3" onClick="toPage(4)" ></div>
+               <div class="arrow right" id="button4" onClick="toPage(4)" ></div>
                </p>
             </div>
          </div>
@@ -367,7 +373,7 @@ d3.json("./network-data.json", function(error, graph) {
             <div class="row">
                <div class="col-1">
                   <p>
-                  <div class="leftarrow" id="button2" onClick="toPage(3)" ></div>
+                  <div class="leftarrow" id="button3" onClick="toPage(3)" ></div>
                   </p>
                </div>
                <div class="col-11">
@@ -903,10 +909,7 @@ function createDropdown() {
     })
 }
 createDropdown();
-var avgRating = 4.0 // TODO: Implement
-needle.defaultRating = avgRating;
-document.getElementById("rating").innerText = Math.round(avgRating * 100) / 100;
-needle.moveTo(avgRating)
+
 
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
@@ -1036,6 +1039,18 @@ $("#subreddit_filter_main").trigger('change');
 $("#subreddit_filter_main").selectpicker('refresh');
 
 console.log(myWordCloud);
+
+
+needle.defaultRating = document.getElementById("positive-posts").value;
+needle.defaultRating = document.getElementById("positive-posts").value;
+
+
+document.getElementById("positive_rate").innerText = "57%"
+needle.UpdateValue();
+document.getElementById("subreddit_filter").addEventListener("change", function(){
+needle.UpdateValue();});
+document.getElementById("subreddit_filter_main").addEventListener("change", function(){  SankeyUpdate();
+    needle.UpdateValue();});
 
 </script>
 </body>

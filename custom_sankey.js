@@ -3,9 +3,9 @@ var margin = {
     top: 10,
     right: 10,
     bottom: 10,
-    left: 140
+    left: 10
 },
-width = 500 - margin.left - margin.right,
+width = 300 - margin.left - margin.right;
 height = 350 - margin.top - margin.bottom;
 
 var maxEmotions = 10;
@@ -19,26 +19,14 @@ color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // load the data
 function SankeyUpdate() {
-d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion.csv", function (error, data) {
+d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion_2.csv", function (error, data) {
 
-
-    var nested_data = d3.nest()
-        .key(function (d) {
-        return d.target;
-    })
-        .rollup(function (leaves) {
-        return d3.sum(leaves, function (d) {
-            return parseFloat(d.value);
-        })
-    })
-        .entries(data);
-	
-    top_emotions = nested_data.slice().sort((a, b) => d3.descending(a.value, b.value)).slice(0, maxEmotions).map(function (d) {
-        return d.key;
-    }); // Select top 10 emotions
 
     // append the svg object to the body of the page
     function updateGraph(filter_value) {
+		
+
+		
         document.getElementById("container-graph").innerHTML = "";
         var svg = d3.select("#container-graph").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -73,10 +61,68 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 			document.getElementById("subreddit_filter").value = subreddit_val;
 			$("#subreddit_filter").selectpicker('refresh');
 		}
-        const data_filtered = data.filter(function (d) {
-            if ((d.source == subreddit_val & d.value > 0) && (top_emotions.includes(d.target)))
+        var data_filtered = data.filter(function (d) {
+            if ((d.source == subreddit_val & d.value > 0))
                 return d;
         }); //return d.source == 'legaladvice' });
+
+
+
+		var nested_data = d3.nest()
+			.key(function (d) {
+			return d.target;
+		})
+			.rollup(function (leaves) {
+			return d3.sum(leaves, function (d) {
+				return parseFloat(d.value);
+			})
+		})
+			.entries(data_filtered);
+					
+		top_emotions = nested_data.slice().sort((a, b) => d3.descending(a.value, b.value)).slice(0, maxEmotions).map(function (d) {
+			return d.key;
+		}); // Select top 10 emotions
+		var top3_emotions = top_emotions.filter(function(e) { return e !== 'neutral' }).slice(0, 3)
+		
+		var emotion_map = { "love": "&#x2764",
+							"joy": "&#x1F603",
+							"fear": "&#x1F628",
+							"disgust": "&#x1F922",
+							"amusement": "&#x1F602",
+							"disappointment": "&#x1F614",
+							"annoyance": "&#x1F620",
+							"sadness": "&#x1F622",
+							"admiration": "&#x1F929",
+							"confusion": "&#x1F635",
+							"approval": "&#x1F44D",
+							"disapproval": "&#x1F44E",
+							"caring" : "&#x1f917",
+							"curiosity": "&#x1F914",
+							"optimism": "&#x1F91E",
+							"anger": "&#x1F621",
+							"excitement":"&#x1F603",
+							"gratitude": "&#x1F64F",
+							"amusement": "&#x1F923",
+							"realization":"&#x1F92F"	
+		}
+
+		
+		var color_1 = color(top3_emotions[0].replace(/ .*/, ""))
+		var color_2 = color(top3_emotions[1].replace(/ .*/, ""))
+		var color_3 = color(top3_emotions[2].replace(/ .*/, ""))
+		var top_emotions_text = "<h2 style=\"color:" + color_1 + "\"> 1. " + top3_emotions[0] + " " + emotion_map[top3_emotions[0]] + "</h2> <br>" + "<h3 style=\"color:" + color_2 + "\"> 2. " + top3_emotions[1]  + " " + emotion_map[top3_emotions[1]] 
+								+ "</h3> <br>" + "<h4 style=\"color:" + color_3 + "\"> 3. " + top3_emotions[2] + " " + emotion_map[top3_emotions[2]] +"</h4>"
+		console.log(top_emotions_text)
+		
+        document.getElementById("top-emotions").innerHTML = top_emotions_text;
+		
+		console.log(top3_emotions);
+		data_filtered = data_filtered.filter(function (d) {
+            if (top_emotions.includes(d.target))
+                return d;
+        }); //return d.source == 'legaladvice' });
+		
+		
         data_filtered['columns'] = ["source", "target", "value"];
         console.log(subreddit_val);
         data_filtered.forEach(function (d) {
@@ -89,7 +135,8 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             graph.links.push({
                 "source": d.source,
                 "target": d.target,
-                "value": +d.value
+                "value": +d.value,
+				"text": d.text
             });
 
         });
@@ -134,13 +181,18 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 			.attr("stroke-width", function (d) { 
                 return Math.max(1, d.dy);
             });
+			
+			
 
         // add the link titles
         link.append("title")
         .text(function (d) {
-            return d.source.name + " → " +
-            d.target.name + "\n" + format(d.value);
+            return format(d.value) + " " + d.target.name + " posts. " + "Example: \n" + d.text;
         });
+		
+		link.on("click", function (d, i){
+				alert("alert");
+				})
 		
 
         // add in the nodes
@@ -237,8 +289,10 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 
             return `url(#${gradientID})`;
         })
-    }
+		
 
+
+    }
     document.getElementById("subreddit_filter").addEventListener("change", function(){
     updateGraph(1)});
     document.getElementById("subreddit_filter_main").addEventListener("change", function(){
