@@ -65,7 +65,6 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             if ((d.source == subreddit_val & d.value > 0))
                 return d;
         }); //return d.source == 'legaladvice' });
-		console.log(data_filtered)
 
 
 
@@ -106,7 +105,7 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 							"amusement": "&#x1F923",
 							"realization":"&#x1F92F"	
 		}
-		
+
 		
 		var color_1 = color(top3_emotions[0].replace(/ .*/, ""))
 		var color_2 = color(top3_emotions[1].replace(/ .*/, ""))
@@ -290,8 +289,10 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 
             return `url(#${gradientID})`;
         })
-    }
+		
 
+
+    }
     document.getElementById("subreddit_filter").addEventListener("change", function(){
     updateGraph(1)});
     document.getElementById("subreddit_filter_main").addEventListener("change", function(){

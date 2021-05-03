@@ -49,7 +49,7 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
   svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
 
   // Add layer for the panel
-  chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+  chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2 - 50) + ", " + ((height + margin.top) / 2) + ")");
   chart.append('path').attr('class', "arc chart-filled");
   chart.append('path').attr('class', "arc chart-empty");
 
@@ -88,6 +88,8 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
       thetaRad = percToRad(perc / 2);
       centerX = 0;
       centerY = 0;
+      this.len = width / 3;
+      this.radius = this.len / 6;	  
       topX = centerX - this.len * Math.cos(thetaRad);
       topY = centerY - this.len * Math.sin(thetaRad);
       leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
@@ -109,6 +111,7 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
     };
 
     Needle.prototype.moveTo = function(stars) {
+		
       const perc = (stars / 5 - 0.4) * 2;
 
       var hue = ((1-(1-perc))*120).toString(10);
@@ -133,7 +136,99 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
         };
     });
     };
+	
+    Needle.prototype.UpdateValue = function(stars) {
+	d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/subreddit_emotion_2.csv", function (error, data) {
 
+        //dataGrouped = d3.group(data, d => d.target)
+		subreddit_val = document.getElementById("subreddit_filter").value;
+		$("#subreddit_filter_main").selectpicker('refresh');
+		
+        var data_filtered = data.filter(function (d) {
+            if ((d.source == subreddit_val & d.value > 0))
+                return d;
+        }); 
+	// Update Gauge
+	
+		var positivity_map = {
+			"admiration":	1 ,
+			"amusement":	1        ,
+			"anger":	-1           ,
+			"annoyance":	-1       ,
+			"approval":	1            ,
+			"caring":	1            ,
+			"confusion":	0        ,
+			"curiosity":	1        ,
+			"desire":	1            ,
+			"disappointment":	-1   ,
+			"disapproval":	-1       ,
+			"disgust":	-1           ,
+			"embarrassment":	-1   ,
+			"excitement":	1        ,
+			"fear":	-1               ,
+			"gratitude":	1        ,
+			"grief":	-1           ,
+			"joy":	1                ,
+			"love":	1                ,
+			"nervousness":	0        ,
+			"optimism":	1            ,
+			"pride":	1            ,
+			"realization":	1        ,
+			"relief":	1            ,
+			"remorse":	-1           ,
+			"sadness":	-1           ,
+			"surprise":	1            ,
+			"neutral":	0
+		}
+	
+
+	var positivity_count = d3.nest()
+			.key(function (d) {
+			return "Total";
+		})
+			.rollup(function (leaves) {
+			return d3.sum(leaves, function (d) {
+				if (positivity_map[d.target] == 1){
+				return parseFloat(d.value) * positivity_map[d.target] };
+			})
+		})
+			.entries(data_filtered)[0].value;	
+	var total_count = d3.nest()
+			.key(function (d) {
+			return "Total";
+		})
+			.rollup(function (leaves) {
+			return d3.sum(leaves, function (d) {
+				return parseFloat(d.value) * Math.abs(positivity_map[d.target]);
+			})
+		})
+			.entries(data_filtered)[0].value;
+
+      const perc = (positivity_count / total_count);
+
+	  document.getElementById("positive_rate").textContent = (perc * 100).toFixed(0) + '%'
+      var hue = ((1-(1-perc))*120).toString(10);
+      const color = ["hsl(",hue,",100%,50%)"].join("");
+
+      d3.select('.chart-filled').style("fill", color )
+      
+        var self,
+        oldValue = this.perc || 0;
+
+        this.perc = perc;
+      self = this;
+
+      // Reset pointer position
+      this.el.transition().delay(300).duration(1500).select('.needle').tween('progress', function() {
+        var needle = d3.select(this);
+        return function(percentOfPercent) {
+            var progress = oldValue + (percentOfPercent * (perc - oldValue));
+            repaintGauge(progress);
+            return needle.attr('d', recalcPointerPos.call(self, progress))
+        };
+    });
+    });
+	};
     return Needle;
 
   })();

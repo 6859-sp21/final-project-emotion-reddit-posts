@@ -253,11 +253,14 @@ body {
                         </div>
                         <div class="col-4">
                            <div id="chart-gauge">
-						   <h4>Positivity rate (excl. neutral)</h4>
-                              <p class = "mb-1 text-center">Average Positivity: <span id = "rating"></span> / 5</p>
+						   <h4>Positivity rate</h4>
+                              <p class = "mb-1 text-center">Average Positivity (excl. neutral): <span id = "positive_rate"></span></p>
                            </div>
+						   <div id="positive-posts"></div>
+						   <div id="non-neutral-posts"></div>
                         </div>
-                     </div>
+                     
+					 </div>
                   </div>
             </div>
             <div class="col-1">
@@ -808,10 +811,7 @@ function createDropdown() {
     })
 }
 createDropdown();
-var avgRating = 4.0 // TODO: Implement
-needle.defaultRating = avgRating;
-document.getElementById("rating").innerText = Math.round(avgRating * 100) / 100;
-needle.moveTo(avgRating)
+
 
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
@@ -941,6 +941,18 @@ $("#subreddit_filter_main").trigger('change');
 $("#subreddit_filter_main").selectpicker('refresh');
 
 console.log(myWordCloud);
+
+
+needle.defaultRating = document.getElementById("positive-posts").value;
+needle.defaultRating = document.getElementById("positive-posts").value;
+
+
+document.getElementById("positive_rate").innerText = "57%"
+needle.UpdateValue();
+document.getElementById("subreddit_filter").addEventListener("change", function(){
+needle.UpdateValue();});
+document.getElementById("subreddit_filter_main").addEventListener("change", function(){  SankeyUpdate();
+    needle.UpdateValue();});
 
 </script>
 </body>
