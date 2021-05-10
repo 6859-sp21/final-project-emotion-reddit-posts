@@ -5,7 +5,7 @@
 
 .topheader {
 	background-color: rgb(255,255,255);
-	  padding: 10px;
+	  padding: 15px;
     border-radius: 5px;
 	outline-color: rgb(204,204,204);
 	outline-width: 2px;
@@ -120,6 +120,12 @@ body {
     margin-top:40px;
 }
 
+.arrow:hover {
+	opacity: 0.5;
+	cursor: pointer;
+    transition: opacity 1s;
+}
+
 
 .leftarrow {
     border-right:10px solid black;
@@ -128,6 +134,12 @@ body {
     height:60px;
     transform: rotate(-225deg);
     margin-top:40px;
+}
+
+.leftarrow:hover {
+	opacity: 0.5;
+	cursor: pointer;
+    transition: opacity 1s;
 }
 
 
@@ -144,6 +156,9 @@ body {
 
 
 </style>
+<head>
+	<link rel="icon" href="https://cdn.iconscout.com/icon/free/png-256/reddit-167-721967.png">
+</head>
 <body>
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <!-- Bootstrap CSS -->
@@ -163,31 +178,28 @@ body {
    <script src="d3.layout.cloud.js"></script>
    <div id="mainPage">
       <section id="page1" class="page">
-         <div class="row">
-            <div class="col-10">
+         <div class="row">	  
+         <div class="col-10">
+		 <div class="topheader">
                <div class="d-flex justify-content-center">
                   <img src="reddit_logo.svg" height=100> </img>
                </div>
-               <div class="d-flex justify-content-center">
-                  <br><br><br><br>
-                  <h3>Is the Internet truly toxic? <br> Use this tool to see what emotions really dominate each Subreddit. </h3>
-               </div>
+                  <h3>Is the Internet truly toxic? <br>
+			   Select a Subreddit below or click on our random cloud to see what emotions dominate.</h3>
+				  <br>
                <div class="d-flex justify-content-center">
                   <span id="r-addon" style="line-height: 2em">/r/</span>
-                  <select  class="selectpicker" data-width="75%" name="subreddit_filter_main" id="subreddit_filter_main" data-style="btn-warning"></select>
+                  <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter_main" id="subreddit_filter_main" data-style="btn-warning"></select>
                </div>
             </div>
-            <div class="col-2">
-               <p>
-               <div class="arrow right" id="button2" onClick="toPage(2)" ></div>
-               </p>
-            </div>
-         </div>
+		 <br>
+		 <div class="content">
          <div class="row">
             <br><br>
             <div class="col-6">
                <br>
                <div id="wordcloud"></div>
+			   <small><i>Click on a Subreddit from this random cloud to analyze it</i>  </small>
             </div>
             <div class="col-4">
                <br><br>
@@ -196,13 +208,20 @@ body {
                </div>
             </div>
          </div>
-         <br><br>
+		 </div>
          <div class="row">
             By Felix Dumont and Taylor Facen
          </div>
          <div class="row">
             <a href="https://huggingface.co/datasets/go_emotions"><b>Dataset </b></a> &nbsp;- The GoEmotions dataset contains 58k carefully curated Reddit comments labeled for 27 emotion categories or Neutral. 
          </div>
+		 </div>
+		 <div class="col-2">
+               <p>
+               <div class="arrow right" id="button2" onClick="toPage(2)" ></div>
+               </p>
+            </div>
+			</div>
       </section>
       <section id="page2" class="page">
          <div class="row">
@@ -216,13 +235,13 @@ body {
                   <div class="row">
                      <div class = "text-center w-100">
                        <h1>
-                         Reddit Communities
+                         High-level Subreddit position
                        </h1>
                      </div>
                    </div>
                  <div class="row">
                    <div>
-                     <svg id = "network-graph" width="960" height="600"></svg>
+                     <!-- <svg id = "network-graph" width="960" height="600"></svg> -->
                    </div>
                    <script src="https://d3js.org/d3.v4.min.js"></script>
                    <script>
@@ -325,9 +344,9 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                   <div class="topheader">
                      <div class="row">
                         <div class="col-6">
-                           <h2>Dominant Emotions in Reddit Posts  </h2>
+                           <h2>Emotion Deep-Dive of Reddit Posts  </h2>
                            <b>Change Subreddit</b> &nbsp;&nbsp;
-                           <select  class="selectpicker" data-width="75%" name="subreddit_filter" id="subreddit_filter" data-style="btn-warning"></select>
+                           <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter" data-style="btn-warning"></select>
                         </div>
                      </div>
                   </div>
@@ -345,10 +364,13 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                         <div class="col-4">
                            <div id="chart-gauge">
 						   <h4>Positivity rate</h4>
-                              <p class = "mb-1 text-center">Average Positivity (excl. neutral): <span id = "positive_rate"></span></p>
+                              <p class = "mb-1 text-center">Average Positivity: <span id = "positive_rate"></span></p>
                            </div>
 						   <div id="positive-posts"></div>
 						   <div id="non-neutral-posts"></div>
+						   <br><br>
+						   <small>Each post emotion has been manually assigned a positive, neutral or negative label (e.g. love -> positive, sadness -> negative).
+<br>						   The positivity rate displays the ratio of non-neutral emotions that are considered positive. </small>
                         </div>
                      
 					 </div>
@@ -920,7 +942,7 @@ function wordCloud(selector) {
         .attr("width", 700)
         .attr("height", 300)
         .append("g")
-        .attr("transform", "translate(350,150)");
+        .attr("transform", "translate(250,150)");
 		
 
 	
@@ -986,7 +1008,7 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            d3.layout.cloud().size([700, 300])
+            d3.layout.cloud().size([500, 300])
                 .words(words)
                 .padding(1)
                 //.rotate(function() { return ~~(Math.random() * 2) * 90; })
