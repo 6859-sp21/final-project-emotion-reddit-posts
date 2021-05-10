@@ -275,7 +275,6 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 		.domain([0, 1])
 		.range(["red", "green"]);
 
-  console.log(graph)
   graph.links.forEach(function(d){
     d.source = d.source;    
     d.target = d.target;
@@ -358,7 +357,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                            <div id="container-graph"></div>
                         </div>
 						<div class="col-4">
-						   <h4>Top emotions</h4>
+						   <h4>Top emotions and examples</h4>
 							<div id="top-emotions"></div>
                         </div>
                         <div class="col-4">
@@ -1055,9 +1054,6 @@ $("#subreddit_filter").selectpicker('refresh');
 
 $("#subreddit_filter_main").trigger('change');
 $("#subreddit_filter_main").selectpicker('refresh');
-
-console.log(myWordCloud);
-
 
 needle.defaultRating = document.getElementById("positive-posts").value;
 needle.defaultRating = document.getElementById("positive-posts").value;

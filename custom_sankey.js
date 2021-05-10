@@ -82,7 +82,29 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 		top_emotions = nested_data.slice().sort((a, b) => d3.descending(a.value, b.value)).slice(0, maxEmotions).map(function (d) {
 			return d.key;
 		}); // Select top 10 emotions
+		
+		data_filtered = data_filtered.filter(function (d) {
+            if (top_emotions.includes(d.target))
+                return d;
+        }); //return d.source == 'legaladvice' });
+		
+		
 		var top3_emotions = top_emotions.filter(function(e) { return e !== 'neutral' }).slice(0, 3)
+		
+		var top1_post = data_filtered.filter(function (d) {
+            if (top3_emotions[0] == d.target)
+                return d;
+        })[0].text;
+		
+		var top2_post = data_filtered.filter(function (d) {
+            if (top3_emotions[1] == d.target)
+                return d;
+        })[0].text;
+		
+		var top3_post = data_filtered.filter(function (d) {
+            if (top3_emotions[2] == d.target)
+                return d;
+        })[0].text;
 		
 		var emotion_map = { "love": "&#x2764",
 							"joy": "&#x1F603",
@@ -110,21 +132,13 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 		var color_1 = color(top3_emotions[0].replace(/ .*/, ""))
 		var color_2 = color(top3_emotions[1].replace(/ .*/, ""))
 		var color_3 = color(top3_emotions[2].replace(/ .*/, ""))
-		var top_emotions_text = "<h2 style=\"color:" + color_1 + "\"> 1. " + top3_emotions[0] + " " + emotion_map[top3_emotions[0]] + "</h2> <br>" + "<h3 style=\"color:" + color_2 + "\"> 2. " + top3_emotions[1]  + " " + emotion_map[top3_emotions[1]] 
-								+ "</h3> <br>" + "<h4 style=\"color:" + color_3 + "\"> 3. " + top3_emotions[2] + " " + emotion_map[top3_emotions[2]] +"</h4>"
-		console.log(top_emotions_text)
-		
+		var top_emotions_text = "<p><h2 style=\"color:" + color_1 + "\"> 1. " + top3_emotions[0] + " " + emotion_map[top3_emotions[0]] + "</h2><small>\"" + top1_post + "\"</small><br>" +
+								"<h3 style=\"color:" + color_2 + "\"> 2. " + top3_emotions[1]  + " " + emotion_map[top3_emotions[1]] + "</h3> <small>\"" + top2_post + "\"</small><br>" +
+								"<h4 style=\"color:" + color_3 + "\"> 3. " + top3_emotions[2] + " " + emotion_map[top3_emotions[2]] +"</h4> <small>\"" + top3_post + "\"</small></p>"
+
         document.getElementById("top-emotions").innerHTML = top_emotions_text;
 		
-		console.log(top3_emotions);
-		data_filtered = data_filtered.filter(function (d) {
-            if (top_emotions.includes(d.target))
-                return d;
-        }); //return d.source == 'legaladvice' });
-		
-		
         data_filtered['columns'] = ["source", "target", "value"];
-        console.log(subreddit_val);
         data_filtered.forEach(function (d) {
             graph.nodes.push({
                 "name": d.source
