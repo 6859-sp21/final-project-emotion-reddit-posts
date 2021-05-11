@@ -204,9 +204,9 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
             return format(d.value) + " " + d.target.name + " posts. " + "Example: \n" + d.text;
         });
 		
-		link.on("click", function (d, i){
-				alert("alert");
-				})
+	//	link.on("click", function (d, i){
+		//		alert("alert");
+			//	})
 		
 
         // add in the nodes

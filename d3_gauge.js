@@ -25,7 +25,7 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
   };
 
   width = el.node().offsetWidth - margin.left - margin.right;
-  height = width /2;
+  height = width /1.5;
   radius = Math.min(width, height) / 2;
   barWidth = 40 * width / 500;
 

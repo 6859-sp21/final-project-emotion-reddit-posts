@@ -5,7 +5,7 @@
 
 .topheader {
 	background-color: rgb(255,255,255);
-	  padding: 15px;
+	  padding: 10px;
     border-radius: 5px;
 	outline-color: rgb(204,204,204);
 	outline-width: 2px;
@@ -182,10 +182,11 @@ body {
          <div class="col-10">
 		 <div class="topheader">
                <div class="d-flex justify-content-center">
-                  <img src="reddit_logo.svg" height=100> </img>
+                  <img src="reddit_logo.svg" height=80> </img>
                </div>
-                  <h3>Is the Internet truly toxic? <br>
-			   Select a Subreddit below or click on our random cloud to see what emotions dominate.</h3>
+                  <h4>Is the Internet truly toxic? <br>
+			   Select a Subreddit below or click on our random cloud.<br> Then, click on next page to analyze the Subreddit emotions.</h4>
+			   
 				  <br>
                <div class="d-flex justify-content-center">
                   <span id="r-addon" style="line-height: 2em">/r/</span>
@@ -196,17 +197,18 @@ body {
 		 <div class="content">
          <div class="row">
             <br><br>
-            <div class="col-6">
+            <div class="col-10">
                <br>
                <div id="wordcloud"></div>
 			   <small><i>Click on a Subreddit from this random cloud to analyze it</i>  </small>
             </div>
+			<!--
             <div class="col-4">
                <br><br>
-               <div class="d-flex justify-content-center">
-                  <script id='reddit_call' src='https://redditjs.com/subreddit.js' data-subreddit='front' data-height='200' data-width='500' data-theme='light'></script> 
+               <div class="d-flex justify-content-center" id="subreddit_div">
+				  <script id="reddit_call" src="https://redditjs.com/subreddit.js" data-subreddit="front" data-height="200" data-width="500" data-theme="light"></script>
                </div>
-            </div>
+            </div> -->
          </div>
 		 </div>
          <div class="row">
@@ -345,7 +347,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                   <div class="topheader">
                      <div class="row">
                         <div class="col-6">
-                           <h2>Emotion Deep-Dive of Reddit Posts  </h2>
+                           <h2>Deep-Dive of Emotions in Reddit Posts  </h2>
                            <b>Change Subreddit</b> &nbsp;&nbsp;
                            <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter" data-style="btn-warning"></select>
                         </div>
@@ -363,13 +365,13 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 							<div id="top-emotions"></div>
                         </div>
                         <div class="col-4">
-                           <div id="chart-gauge">
 						   <h4>Positivity rate</h4>
-                              <p class = "mb-1 text-center">Average Positivity: <span id = "positive_rate"></span></p>
+                           <div id="chart-gauge">
+                              Average Positivity: <span id = "positive_rate"></span>
                            </div>
 						   <div id="positive-posts"></div>
 						   <div id="non-neutral-posts"></div>
-						   <br><br>
+						   <br>
 						   <small>Each post emotion has been manually assigned a positive, neutral or negative label (e.g. love -> positive, sadness -> negative).
 <br>						   The positivity rate displays the ratio of non-neutral emotions that are considered positive. </small>
                         </div>
@@ -394,7 +396,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                </div>
                <div class="col-11">
                   <div>
-                     Conclusion
+                      <h4>Conclusion </h4>
                   </div>
                   <div>
                       TBD.
@@ -413,20 +415,44 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 <script type="text/javascript" src="d3_gauge.js"></script>
 <script type="text/javascript" src="utilities.js"></script>
 <script>
+		//document.getElementById('subreddit_div').innerHTML = "aa"
+		//var tmp = "<script id='reddit_call' src='https:\/\/redditjs.com\/subreddit.js' data-subreddit='front' data-height='200' data-width='500' data-theme='light'><\/script> ";
+		//document.getElementById('subreddit_div').innerHTML = tmp;
+		
+//		eval(document.getElementById('subreddit_div').innerHTML)
+	//	console.log(tmp);
+	/*
+		var target = document.getElementById('subreddit_div')
+		var script = document.createElement("script");
+		script.src = "https://redditjs.com/subreddit.js";
+		script.setAttribute('data-subreddit', 'mba');
+		console.log(script)
+		target.appendChild(script);
 		//script = document.getElementById('reddit_call')
 		//console.log(document.getElementById('reddit_call'))
-
+*/
 		//var script = document.createElement("script");
 
 	//	script.src = "https://redditjs.com/subreddit.js"; 
-//		script.setAttribute('data-subreddit', 'mba')
-		
+		//script.setAttribute('data-subreddit', 'mba')
+	//	
+		//script.contentWindow.location.reload();
 		//script.type = "text/javascript";	
 	//	script.setAttribute('type', 'text/javascript');
 //		document.getElementsByTagName("body")[0].appendChild(script);
 		//var elem = document.getElementById("myDIV");			
 		//elem`.appendChild(script);
-		//script.setAttribute('data-subreddit', 'chess')
+		//script.setAttribute('data-subreddit', 'mba')
+		/*
+		var mydiv = document.getElementById("subreddit_div");
+		console.log(mydiv.innerHTML);
+		eval(mydiv.innerHTML)
+		var arr = mydiv.getElementsByTagName('script')
+			for (var n = 0; n < arr.length; n++)
+				eval(arr[0].innerHTML)//run script inside div
+				console.log(arr[0].innerHTML)
+				
+		*/
 
 const subreddit_list = [
 '2meirl4meirl',
@@ -940,10 +966,10 @@ function wordCloud(selector) {
 
     //Construct the word cloud's SVG element
     var svg = d3.select(selector).append("svg")
-        .attr("width", 700)
-        .attr("height", 300)
+        .attr("width", 1200)
+        .attr("height", 240)
         .append("g")
-        .attr("transform", "translate(250,150)");
+        .attr("transform", "translate(600,120)");
 		
 
 	
@@ -1009,7 +1035,7 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            d3.layout.cloud().size([500, 300])
+            d3.layout.cloud().size([1200, 240])
                 .words(words)
                 .padding(1)
                 //.rotate(function() { return ~~(Math.random() * 2) * 90; })
