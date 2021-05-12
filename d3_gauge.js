@@ -158,7 +158,7 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
 			"approval":	1            ,
 			"caring":	1            ,
 			"confusion":	0        ,
-			"curiosity":	1        ,
+			"curiosity":	0        ,
 			"desire":	1            ,
 			"disappointment":	-1   ,
 			"disapproval":	-1       ,
@@ -177,7 +177,7 @@ var barWidth, chart, chartInset, degToRad, repaintGauge,
 			"relief":	1            ,
 			"remorse":	-1           ,
 			"sadness":	-1           ,
-			"surprise":	1            ,
+			"surprise":	0            ,
 			"neutral":	0
 		}
 	
