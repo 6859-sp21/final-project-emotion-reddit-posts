@@ -236,14 +236,15 @@ body {
             </div>
             <div class="col-10">
                <div>
-                  <div class="row">
-                     <div class = "text-center w-100">
-                       <h1>
-                         High-level Subreddit position
-                       </h1>
-                       <p>Do users tend to engage in subreddits with different emotions? (TODO re-word) Subreddits are colored by their most dominant non-neutral sentiment. Two subreddits are connected if a majority of users from one subreddit posts in the other.</p>
-                     </div>
-                   </div>
+                <div class="row">
+                    <div class="topheader">
+                       <h2>High-level Subreddit position</h2>
+                       <p>What communities are closest to the selected subreddit selected? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
+                       <div class = "col-6">
+                        <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter_page_2" data-style="btn-warning"></select>
+                       </div>
+                    </div>
+                 </div>
                  <div class="row">
                    <div id = "arc-graph">
 
@@ -252,9 +253,9 @@ body {
                    <script src="https://d3js.org/d3.v4.min.js"></script>
                    <script>
                         // set the dimensions and margins of the graph
-const arcMargin = {top: 150, right: 70, bottom: 150, left: 70}
+const arcMargin = {top: 250, right: 70, bottom: 75, left: 70}
 const arcWidth = 1100 - arcMargin.left - arcMargin.right;
-const arcHeight = 650 - arcMargin.top - arcMargin.bottom;
+const arcHeight = 500 - arcMargin.top - arcMargin.bottom;
 
 
 d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/arc-data.json", function(data) {
@@ -264,7 +265,11 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         oldSVG.selectAll("*").remove();
         oldSVG.remove();
 
-        const filterValue = document.getElementById("subreddit_filter_main").value;
+        const filterValue = document.getElementById("subreddit_filter_page_2").value;
+        const filterValueLinks = data.links.filter(link => link.source === filterValue);
+        const filterValueLinkTargets = filterValueLinks.map(link => link.target);
+        console.log(filterValueLinkTargets)
+
         let filteredLinks = data.links.filter(link => link.source === filterValue);
         const subredditsInView = filteredLinks.map(link => link.target);
 
@@ -273,6 +278,8 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             nodes: data.nodes.filter(node => subredditsInView.includes(node.name) || node.name === filterValue).sort((n1, n2) => n1.group > n2.group ? 1 : -1),
             links: filteredLinks
         }
+
+        const focusNode = filteredData.nodes.find(node => node.name === filterValue);
 
         const svg = d3.select("#arc-graph")
             .append("svg")
@@ -325,8 +332,9 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                 .join(' ');
             })
             .style("fill", "none")
-            .attr("stroke", "grey")
-            .style("stroke-width", 1)
+            .style("stroke-width", link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 4 : 1)
+            .style('stroke', link_d => link_d.source === filterValue || link_d.target === filterValue ? color(focusNode.group) : '#b8b8b8')
+            .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
 
         // Add the circle for the nodes
         var nodes = svg
@@ -339,6 +347,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             .attr("r", function(d){ return(size(d.n))})
             .style("fill", function(d){ return color(d.group)})
             .attr("stroke", "white")
+            .style('opacity', label_d => label_d.name === filterValue ? 1 : .2)
         
         // And give them a label
         var labels = svg
@@ -372,11 +381,11 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 
             })
             .on('mouseout', function (d) {
-            nodes.style('opacity', 1)
+            nodes.style('opacity', label_d => label_d.name === filterValue ? 1 : .2)
             links
-                .style('stroke', 'grey')
-                .style('stroke-opacity', .8)
-                .style('stroke-width', '1')
+                .style('stroke', link_d => link_d.source === filterValue || link_d.target === filterValue ? color(focusNode.group) : '#b8b8b8')
+                .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
+                .style('stroke-width', link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 4 : 1)
             labels
                 .style("font-size", label_d => label_d.name === filterValue ? 24 : 10 )
 
@@ -386,6 +395,8 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         
         updateGraph();
         document.getElementById("subreddit_filter").addEventListener("change", function(){
+        updateGraph()});
+        document.getElementById("subreddit_filter_page_2").addEventListener("change", function(){
         updateGraph()});
         document.getElementById("subreddit_filter_main").addEventListener("change", function(){
         updateGraph()});
@@ -1020,6 +1031,12 @@ function createDropdown() {
         option2.text = option2.value = d;
         select2.add(option2);
     })
+    const select3 = document.getElementById("subreddit_filter_page_2");
+    subreddit_list.forEach((d) => {
+        const option2 = document.createElement("option");
+        option2.text = option2.value = d;
+        select3.add(option2);
+    })
 }
 createDropdown();
 
@@ -1062,6 +1079,11 @@ function wordCloud(selector) {
 				document.getElementById("subreddit_filter_main").value = d.text;
 								
 				$("#subreddit_filter_main").selectpicker('refresh');
+
+                document.getElementById("subreddit_filter_page_2").value = d.text;
+								
+				$("#subreddit_filter_main").selectpicker('refresh');
+
 				 SankeyUpdate();
 				})
 				.on("mouseover", function(d) {		
@@ -1148,6 +1170,9 @@ SankeyUpdate()
 $("#subreddit_filter").trigger('change');
 $("#subreddit_filter").selectpicker('refresh');
 
+$("#subreddit_filter_page_2").trigger('change');
+$("#subreddit_filter_page_2").selectpicker('refresh');
+
 $("#subreddit_filter_main").trigger('change');
 $("#subreddit_filter_main").selectpicker('refresh');
 
@@ -1158,6 +1183,8 @@ needle.defaultRating = document.getElementById("positive-posts").value;
 document.getElementById("positive_rate").innerText = "57%"
 needle.UpdateValue();
 document.getElementById("subreddit_filter").addEventListener("change", function(){
+needle.UpdateValue();});
+document.getElementById("subreddit_filter_page_2").addEventListener("change", function(){
 needle.UpdateValue();});
 document.getElementById("subreddit_filter_main").addEventListener("change", function(){  SankeyUpdate();
     needle.UpdateValue();});
