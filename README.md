@@ -9,10 +9,12 @@ Felix Dumont
 - Data pre-processing
 - Deep-Dive of Emotions in Reddit Posts page
 - Intro page
+- Paper
 
 Taylor Facen
 - Data pre-processing
 - Analyzing Related Subreddits
 - Project page
+- 1-minute video
 
 ## Project Process
