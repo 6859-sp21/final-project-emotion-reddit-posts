@@ -202,13 +202,6 @@ body {
                <div id="wordcloud"></div>
 			   <small><i>Click on a Subreddit from this random cloud to analyze it</i>  </small>
             </div>
-			<!--
-            <div class="col-4">
-               <br><br>
-               <div class="d-flex justify-content-center" id="subreddit_div">
-				  <script id="reddit_call" src="https://redditjs.com/subreddit.js" data-subreddit="front" data-height="200" data-width="500" data-theme="light"></script>
-               </div>
-            </div> -->
          </div>
 		 </div>
          <div class="row">
@@ -228,34 +221,38 @@ body {
 			</div>
       </section>
       <section id="page2" class="page">
-         <div class="row">
+        <div class="row">
             <div class="col-1">
                <p>
                <div class="leftarrow" id="button2" onClick="toPage(1)" ></div>
                </p>
             </div>
             <div class="col-10">
-               <div>
-                <div class="row">
-                    <div class="topheader">
-                       <h2>High-level Subreddit position</h2>
-                       <p>What communities are closest to the selected subreddit selected? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
-                       <div class = "col-6">
-                        <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter_page_2" data-style="btn-warning"></select>
-                       </div>
+                <div class = "topheader">
+                    <div class="row">
+                        <div class = "col-6">
+                            <h2>High-level Subreddit position</h2>
+                            <p>What communities are closest to the selected subreddit? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
+                            <div class = "col-6">
+                                <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter_page_2" data-style="btn-warning"></select>
+                            </div>
+                        </div>
                     </div>
-                 </div>
-                 <div class="row">
-                   <div id = "arc-graph">
-
-                   </div>
-                   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-                   <script src="https://d3js.org/d3.v4.min.js"></script>
-                   <script>
-                        // set the dimensions and margins of the graph
-const arcMargin = {top: 250, right: 70, bottom: 75, left: 70}
-const arcWidth = 1100 - arcMargin.left - arcMargin.right;
-const arcHeight = 500 - arcMargin.top - arcMargin.bottom;
+                </div>
+                <br>
+                <div class = "content">
+                    <div class="row">
+                        <div id = "arc-graph"></div>
+                        <div id = "arc-legend" class = "mt-4">
+                             <ul></ul>
+                        </div>
+                        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+                        <script src="https://d3js.org/d3.v4.min.js"></script>
+                        <script>
+    // set the dimensions and margins of the graph
+    const arcMargin = {top: 250, right: 70, bottom: 75, left: 70}
+                    const arcWidth = 800 - arcMargin.left - arcMargin.right;
+                    const arcHeight = 440 - arcMargin.top - arcMargin.bottom;
 
 
 d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/arc-data.json", function(data) {
@@ -266,10 +263,6 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         oldSVG.remove();
 
         const filterValue = document.getElementById("subreddit_filter_page_2").value;
-        const filterValueLinks = data.links.filter(link => link.source === filterValue);
-        const filterValueLinkTargets = filterValueLinks.map(link => link.target);
-        console.log(filterValueLinkTargets)
-
         let filteredLinks = data.links.filter(link => link.source === filterValue);
         const subredditsInView = filteredLinks.map(link => link.target);
 
@@ -295,10 +288,9 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         let allGroups = filteredData.nodes.map(function(d){return d.group})
         allGroups = [...new Set(allGroups)];
 
+
         // A color scale for groups:
-        const color = d3.scaleOrdinal()
-            .domain(allGroups)
-            .range(d3.schemeSet3);
+        const color = d3.scaleOrdinal(d3.schemeCategory10)
 
         // A linear scale for node size
         const size = d3.scaleLinear()
@@ -314,6 +306,20 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         filteredData.nodes.forEach(function (n) {
             idToNode[n.id] = n;
         });
+
+        // Update legend
+        const ul = document.querySelector("#arc-legend ul");
+        while (ul.firstChild) {
+            ul.removeChild(ul.firstChild);
+        };
+
+        const sentiments = allGroups.map(group => ({ group, sentiment: filteredData.nodes.find(node => node.group === group)?.sentiment, color: color(group) }));
+        for ( const sentiment of sentiments ) {
+            var li = document.createElement('li');
+            li.textContent = sentiment.sentiment;
+            li.style.color = sentiment.color;
+            ul.appendChild(li);
+        }
 
         // Add the links
         var links = svg
@@ -401,16 +407,16 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         document.getElementById("subreddit_filter_main").addEventListener("change", function(){
         updateGraph()});
     })
-                   </script>
-                 </div>
-               </div>
+                        </script>
+                    </div>
+                </div>
             </div>
             <div class="col-1">
-               <p>
-               <div class="arrow right" id="button3" onClick="toPage(3)" ></div>
-               </p>
+                <p>
+                    <div class="arrow right" id="button3" onClick="toPage(3)" ></div>
+                </p>
             </div>
-         </div>
+        </div>
       </section>
       <section id="page3" class="page">
          <div class="row">
