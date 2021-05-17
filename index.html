@@ -231,7 +231,7 @@ body {
                 <div class = "topheader">
                     <div class="row">
                         <div class = "col-6">
-                            <h2>High-level Subreddit position</h2>
+                            <h2>Analyzing Related Subreddits</h2>
                             <p>What communities are closest to the selected subreddit? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
                             <div class = "col-6">
                                 <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter_page_2" data-style="btn-warning"></select>
@@ -250,8 +250,8 @@ body {
                         <script src="https://d3js.org/d3.v4.min.js"></script>
                         <script>
     // set the dimensions and margins of the graph
-    const arcMargin = {top: 250, right: 70, bottom: 75, left: 70}
-                    const arcWidth = 800 - arcMargin.left - arcMargin.right;
+    const arcMargin = {top: 250, right: 100, bottom: 75, left: 100}
+                    const arcWidth = 750 - arcMargin.left - arcMargin.right;
                     const arcHeight = 440 - arcMargin.top - arcMargin.bottom;
 
 
@@ -338,7 +338,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                 .join(' ');
             })
             .style("fill", "none")
-            .style("stroke-width", link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 4 : 1)
+            .style("stroke-width", link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 2 : 1)
             .style('stroke', link_d => link_d.source === filterValue || link_d.target === filterValue ? color(focusNode.group) : '#b8b8b8')
             .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
 
@@ -350,7 +350,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             .append("circle")
             .attr("cx", function(d){ return(x(d.name))})
             .attr("cy", arcHeight-30)
-            .attr("r", function(d){ return(size(d.n))})
+            .attr("r", function(d){ return(size(Math.log(d.n) * 5))})
             .style("fill", function(d){ return color(d.group)})
             .attr("stroke", "white")
             .style('opacity', label_d => label_d.name === filterValue ? 1 : .2)
@@ -391,7 +391,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             links
                 .style('stroke', link_d => link_d.source === filterValue || link_d.target === filterValue ? color(focusNode.group) : '#b8b8b8')
                 .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
-                .style('stroke-width', link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 4 : 1)
+                .style('stroke-width', link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 2 : 1)
             labels
                 .style("font-size", label_d => label_d.name === filterValue ? 24 : 10 )
 
