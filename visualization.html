@@ -229,7 +229,7 @@ body {
             <div class="col-10">
                 <div class = "topheader">
                     <div class="row">
-                        <div class = "col-6">
+                        <div class = "col-12">
                             <h2>Analyzing Related Subreddits</h2>
                             <p>What communities are closest to the selected subreddit? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
                             <div class = "col-6">
@@ -245,24 +245,53 @@ body {
                         <div id = "arc-legend" class = "border-left p-5">
                             <h4>Sentiment Legend</h4>
                              <ul style = "list-style: none; padding: 0px;"></ul>
+							 <small>Each Subreddit is colored according to its dominant emotion.<br>
+							 Circle size represent the number of posts in the Subreddit.
+							 </small>
                         </div>
                         <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
                         <script src="https://d3js.org/d3.v4.min.js"></script>
                         <script>
     // set the dimensions and margins of the graph
-    const arcMargin = {top: 225, right: 100, bottom: 100, left: 100}
+    const arcMargin = {top: 225, right: 50, bottom: 100, left: 100}
                     const arcWidth = 750 - arcMargin.left - arcMargin.right;
                     const arcHeight = 440 - arcMargin.top - arcMargin.bottom;
 
 
 d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit-posts/main/arc-data.json", function(data) {
-    function updateGraph() {
-        // Remove old grapth
+    function updateGraph(filter_value) {
+	
+		if (filter_value==1){
+			subreddit_val = document.getElementById("subreddit_filter").value;
+			document.getElementById("subreddit_filter_main").value = subreddit_val;
+			
+			document.getElementById("subreddit_filter_page_2").value = subreddit_val;
+			$("#subreddit_filter_main").selectpicker('refresh');
+			$("#subreddit_filter_page_2").selectpicker('refresh');
+			console.log(subreddit_val);
+		}
+		else if (filter_value==2){
+			subreddit_val = document.getElementById("subreddit_filter_main").value;
+			document.getElementById("subreddit_filter").value = subreddit_val;
+			
+			document.getElementById("subreddit_filter_page_2").value = subreddit_val;
+			$("#subreddit_filter").selectpicker('refresh');
+			$("#subreddit_filter_page_2").selectpicker('refresh');
+		}
+		else {
+			subreddit_val = document.getElementById("subreddit_filter_page_2").value;
+			document.getElementById("subreddit_filter").value = subreddit_val;
+			document.getElementById("subreddit_filter_main").value = subreddit_val;
+			$("#subreddit_filter").selectpicker('refresh');	
+			$("#subreddit_filter_main").selectpicker('refresh');				
+		}
+        // Remove old graph
         const oldSVG = d3.select("#arc-graph svg");
         oldSVG.selectAll("*").remove();
         oldSVG.remove();
 
         const filterValue = document.getElementById("subreddit_filter_page_2").value;
+		console.log(filterValue)
         let filteredLinks = data.links.filter(link => link.source === filterValue);
         const subredditsInView = filteredLinks.map(link => link.target);
 
@@ -340,7 +369,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             .style("fill", "none")
             .style("stroke-width", link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 2 : 1)
             .style('stroke', link_d => link_d.source === filterValue || link_d.target === filterValue ? color(focusNode.group) : '#b8b8b8')
-            .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
+            .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .25)
 
         // Add the circle for the nodes
         var nodes = svg
@@ -353,8 +382,8 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             .attr("r", function(d){ return(size(Math.log(d.n) * 5))})
             .style("fill", function(d){ return color(d.group)})
             .attr("stroke", "white")
-            .style('opacity', label_d => label_d.name === filterValue ? 1 : .2)
-        
+            .style('opacity', label_d => label_d.name === filterValue ? 1 : .25)
+        5
         // And give them a label
         var labels = svg
             .selectAll("mylabels")
@@ -401,11 +430,12 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         
         updateGraph();
         document.getElementById("subreddit_filter").addEventListener("change", function(){
-        updateGraph()});
+        updateGraph(1)});
+		document.getElementById("subreddit_filter_main").addEventListener("change", function(){
+        updateGraph(2)});
         document.getElementById("subreddit_filter_page_2").addEventListener("change", function(){
-        updateGraph()});
-        document.getElementById("subreddit_filter_main").addEventListener("change", function(){
-        updateGraph()});
+        updateGraph(3)});
+
     })
                         </script>
                     </div>
@@ -500,44 +530,6 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 <script type="text/javascript" src="d3_gauge.js"></script>
 <script type="text/javascript" src="utilities.js"></script>
 <script>
-		//document.getElementById('subreddit_div').innerHTML = "aa"
-		//var tmp = "<script id='reddit_call' src='https:\/\/redditjs.com\/subreddit.js' data-subreddit='front' data-height='200' data-width='500' data-theme='light'><\/script> ";
-		//document.getElementById('subreddit_div').innerHTML = tmp;
-		
-//		eval(document.getElementById('subreddit_div').innerHTML)
-	//	console.log(tmp);
-	/*
-		var target = document.getElementById('subreddit_div')
-		var script = document.createElement("script");
-		script.src = "https://redditjs.com/subreddit.js";
-		script.setAttribute('data-subreddit', 'mba');
-		console.log(script)
-		target.appendChild(script);
-		//script = document.getElementById('reddit_call')
-		//console.log(document.getElementById('reddit_call'))
-*/
-		//var script = document.createElement("script");
-
-	//	script.src = "https://redditjs.com/subreddit.js"; 
-		//script.setAttribute('data-subreddit', 'mba')
-	//	
-		//script.contentWindow.location.reload();
-		//script.type = "text/javascript";	
-	//	script.setAttribute('type', 'text/javascript');
-//		document.getElementsByTagName("body")[0].appendChild(script);
-		//var elem = document.getElementById("myDIV");			
-		//elem`.appendChild(script);
-		//script.setAttribute('data-subreddit', 'mba')
-		/*
-		var mydiv = document.getElementById("subreddit_div");
-		console.log(mydiv.innerHTML);
-		eval(mydiv.innerHTML)
-		var arr = mydiv.getElementsByTagName('script')
-			for (var n = 0; n < arr.length; n++)
-				eval(arr[0].innerHTML)//run script inside div
-				console.log(arr[0].innerHTML)
-				
-		*/
 
 const subreddit_list = [
 '2meirl4meirl',
@@ -1088,9 +1080,11 @@ function wordCloud(selector) {
 
                 document.getElementById("subreddit_filter_page_2").value = d.text;
 								
-				$("#subreddit_filter_main").selectpicker('refresh');
+				$("#subreddit_filter_page_2").selectpicker('refresh');
 
 				 SankeyUpdate();
+				$("#subreddit_filter_page_2").selectpicker('refresh');
+
 				})
 				.on("mouseover", function(d) {		
 
@@ -1176,13 +1170,11 @@ SankeyUpdate()
 $("#subreddit_filter").trigger('change');
 $("#subreddit_filter").selectpicker('refresh');
 
-$("#subreddit_filter_page_2").trigger('change');
-$("#subreddit_filter_page_2").selectpicker('refresh');
-
 $("#subreddit_filter_main").trigger('change');
 $("#subreddit_filter_main").selectpicker('refresh');
 
-needle.defaultRating = document.getElementById("positive-posts").value;
+$("#subreddit_filter_page_2").trigger('change');
+$("#subreddit_filter_page_2").selectpicker('refresh');
 needle.defaultRating = document.getElementById("positive-posts").value;
 
 

@@ -54,12 +54,25 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
 			subreddit_val = document.getElementById("subreddit_filter").value;
 			document.getElementById("subreddit_filter_main").value = subreddit_val;
 			
+			document.getElementById("subreddit_filter_page_2").value = subreddit_val;
 			$("#subreddit_filter_main").selectpicker('refresh');
+			$("#subreddit_filter_page_2").selectpicker('refresh');
+			console.log(subreddit_val);
 		}
-		else {
+		else if (filter_value==2){
 			subreddit_val = document.getElementById("subreddit_filter_main").value;
 			document.getElementById("subreddit_filter").value = subreddit_val;
+			
+			document.getElementById("subreddit_filter_page_2").value = subreddit_val;
 			$("#subreddit_filter").selectpicker('refresh');
+			$("#subreddit_filter_page_2").selectpicker('refresh');
+		}
+		else {
+			subreddit_val = document.getElementById("subreddit_filter_page_2").value;
+			document.getElementById("subreddit_filter").value = subreddit_val;
+			document.getElementById("subreddit_filter_main").value = subreddit_val;
+			$("#subreddit_filter").selectpicker('refresh');	
+			$("#subreddit_filter_main").selectpicker('refresh');				
 		}
         var data_filtered = data.filter(function (d) {
             if ((d.source == subreddit_val & d.value > 0))
@@ -311,6 +324,8 @@ d3.csv("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddit
     updateGraph(1)});
     document.getElementById("subreddit_filter_main").addEventListener("change", function(){
     updateGraph(2)});
+	document.getElementById("subreddit_filter_page_2").addEventListener("change", function(){
+    updateGraph(3)});
     updateGraph();
 });
 }
