@@ -189,7 +189,7 @@ body {
 				  <br>
                <div class="d-flex justify-content-center">
                   <span id="r-addon" style="line-height: 2em">/r/</span>
-                  <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter_main" id="subreddit_filter_main" data-style="btn-warning"></select>
+                  <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter_main" id="subreddit_filter_main" data-style="btn-warning" default="advice"></select>
                </div>
             </div>
 		 <br>
@@ -230,8 +230,10 @@ body {
                 <div class = "topheader">
                     <div class="row">
                         <div class = "col-12">
-                            <h2>Analyzing Related Subreddits</h2>
-                            <p>What communities are closest to the selected subreddit? The top 20 communities with the most similar authors to the selected subreddit are displayed below. Subreddits are shaded by their most dominant non-neutral sentiment.</p> &nbsp;&nbsp;
+                            <h2>Closest Subreddit communities</h2>
+                            <p>What communities are closest to the selected Subreddit? Do they share common emotions?<br>
+							For each Subreddit, we show the top <b>20 communities with the largest overlap</b> in authors. <br>
+							Subreddits are shaded by their most dominant non-neutral sentiment.</p>
                             <div class = "col-6">
                                 <select  class="selectpicker" data-width="75%" data-live-search="true" name="subreddit_filter" id="subreddit_filter_page_2" data-style="btn-warning"></select>
                             </div>
@@ -246,7 +248,8 @@ body {
                             <h4>Sentiment Legend</h4>
                              <ul style = "list-style: none; padding: 0px;"></ul>
 							 <small>Each Subreddit is colored according to its dominant emotion.<br>
-							 Circle size represent the number of posts in the Subreddit.
+							 Circle size represent the number of posts in the Subreddit.<br>
+							 Subreddits are ordered by dominant emotion.
 							 </small>
                         </div>
                         <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -395,7 +398,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
             .text(function(d){ return(d.name)} )
             .style("text-anchor", "end")
             .attr("transform", function(d){ return( "translate(" + (x(d.name)) + "," + (arcHeight-15) + ")rotate(-45)")})
-            .style("font-size", label_d => label_d.name === filterValue ? 24 : 10)
+            .style("font-size", label_d => label_d.name === filterValue ? 18 : 10)
 
         // Add the highlighting functionality
         nodes
@@ -422,7 +425,7 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                 .style('stroke-opacity', link_d => link_d.source === filterValue || link_d.target === filterValue ? 1 : .2)
                 .style('stroke-width', link_d =>  link_d.source === filterValue || link_d.target === filterValue ? 2 : 1)
             labels
-                .style("font-size", label_d => label_d.name === filterValue ? 24 : 10 )
+                .style("font-size", label_d => label_d.name === filterValue ? 18 : 10 )
 
             })
         };
@@ -1186,6 +1189,5 @@ document.getElementById("subreddit_filter_page_2").addEventListener("change", fu
 needle.UpdateValue();});
 document.getElementById("subreddit_filter_main").addEventListener("change", function(){  SankeyUpdate();
     needle.UpdateValue();});
-
 </script>
 </body>
