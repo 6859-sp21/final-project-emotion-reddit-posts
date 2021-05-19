@@ -206,9 +206,7 @@ body {
          <div class="row">
             By Felix Dumont and Taylor Facen
          </div>
-         <div class="row">
-            <a href="https://huggingface.co/datasets/go_emotions"><b>Dataset </b></a> &nbsp;- The GoEmotions dataset contains 58k carefully curated Reddit comments labeled for 27 emotion categories or Neutral. 
-         </div>
+
 		 </div>
 		 <div class="col-2">
                <p>
@@ -271,7 +269,6 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
 			document.getElementById("subreddit_filter_page_2").value = subreddit_val;
 			$("#subreddit_filter_main").selectpicker('refresh');
 			$("#subreddit_filter_page_2").selectpicker('refresh');
-			console.log(subreddit_val);
 		}
 		else if (filter_value==2){
 			subreddit_val = document.getElementById("subreddit_filter_main").value;
@@ -294,7 +291,6 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
         oldSVG.remove();
 
         const filterValue = document.getElementById("subreddit_filter_page_2").value;
-		console.log(filterValue)
         let filteredLinks = data.links.filter(link => link.source === filterValue);
         const subredditsInView = filteredLinks.map(link => link.target);
 
@@ -510,14 +506,26 @@ d3.json("https://raw.githubusercontent.com/6859-sp21/final-project-emotion-reddi
                   </p>
                </div>
                <div class="col-11">
-                  <div>
-                      <h4>Additional Information</h4>
+                  <div class="topheader">
+                      <h2>Additional Information</h2>
                   </div>
-                  <div>
+				  <br>
+                  <div class="content">
+						<h3>Dataset</h3> <p>
+            <a href="https://huggingface.co/datasets/go_emotions"><b>Dataset </b></a> &nbsp;- The GoEmotions dataset contains 58k carefully curated Reddit comments labeled for 27 emotion categories or Neutral. </p>
+						<h3>Emotions </h3>
 						<p>We used the following emotions:
 							<br><b style="color:green;">Positive emotions:</b> Admiration, amusement, approval, caring, desire, excitement, gratitude, joy, love, optimism, pride, realization and relief
 							<br><b style="color:gray;">Neutral emotions:</b> Confusion, curiosity, nervousness, neutral and surprise
 							<br><b style="color:red;">Negative emotions:</b> Anger, annoyance, disappointment, disapproval, disgut, embarrassment, fear, grief, remorse and sadness </p>
+				<h3>Other sources</h3>			
+				        <p><a target = "_blank" href = "https://www.d3-graph-gallery.com/graph/arc_template.html">Inspiration for arc diagram</a></p>
+		<p><a target = "_blank" href = "https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html">Inspiration for word cloud</a></p>
+		
+		<p><a target = "_blank" href = "https://bl.ocks.org/d3noob/06e72deea99e7b4859841f305f63ba85">Inspiration for Sankey diagram</a></p>
+		
+		
+		
                   </div>
                </div>
             </div>

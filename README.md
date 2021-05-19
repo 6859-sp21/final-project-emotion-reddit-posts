@@ -7,8 +7,9 @@ This project was completed by the following students:
 
 Felix Dumont
 - Data pre-processing
-- Deep-Dive of Emotions in Reddit Posts page
 - Intro page
+- Deep-Dive of Emotions in Reddit Posts page
+- Additional details page
 - Paper
 
 Taylor Facen
